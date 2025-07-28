@@ -3,17 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <title>Alba GFX Skema Template Editor</title>
-  <style>
-    table { border-collapse: collapse; width: 100%; font-family: sans-serif; }
-    th, td { border: 1px solid #ccc; padding: 4px; }
-    th { background: #eee; }
-    input { width: 100%; border: none; background: transparent; }
-  </style>
+ <style>
+  #table-container {
+    overflow-x: auto;
+  }
+
+  table {
+    border-collapse: collapse;
+    min-width: max-content; /* Gør tabellen så bred som nødvendigt */
+    font-family: sans-serif;
+  }
+
+  th, td {
+    border: 1px solid #ccc;
+    padding: 4px;
+    vertical-align: top;
+    white-space: nowrap; /* Forhindrer linjeskift i celler */
+  }
+
+  th {
+    background: #eee;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
+  input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>
+
+
 </head>
 <body>
   <h1>Alba GFX Skema Template Editor</h1>
   <button onclick="save()">💾 Gem ændringer</button>
-  <button onclick="addRow()">➕ Tilføj design</button>
+  <button onclick="addRow()">➕ Tilføj ny linje i bunden</button>
 
   <div id="table-container"></div>
 
