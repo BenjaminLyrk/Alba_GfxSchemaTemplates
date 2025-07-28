@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <title>CasparCG Editor</title>
+  <style>
+    table { border-collapse: collapse; width: 100%; font-family: sans-serif; }
+    th, td { border: 1px solid #ccc; padding: 4px; }
+    th { background: #eee; }
+    input { width: 100%; border: none; background: transparent; }
+  </style>
+</head>
+<body>
+  <h1>CasparCG Design Editor</h1>
+  <button onclick="save()">💾 Gem ændringer</button>
+  <div id="table-container"></div>
+
+  <script>
+    let data = [];
+
+    fetch('/api/designs')
+      .then(res => res.json())
+      .then(json => {
+        data = json;
+        renderTable(json);
+      });
+
+    function renderTable(rows) {
+      const keys = [...new Set(rows.flatMap(r => Object.keys(r)))];
+      const table = document.createElement('table');
+      const thead = table.insertRow();
+      keys.forEach(k => {
+        const th = document.createElement('th');
+        th.textContent = k;
+        thead.appendChild(th);
+      });
+
+      rows.forEach((row, i) => {
+        const tr = table.insertRow();
+        keys.forEach(k => {
+          const td = tr.insertCell();
+          const input = document.createElement('input');
+          input.value = row[k] || '';
+          input.oninput = e => data[i][k] = e.target.value;
+          td.appendChild(input);
+        });
+      });
+
+      document.getElementById('table-container').innerHTML = '';
+      document.getElementById('table-container').appendChild(table);
+    }
+
+    function save() {
+      fetch('/api/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(() => alert('Gemte ændringer!'));
+    }
+  </script>
+</body>
+</html>
