@@ -7,7 +7,7 @@ const PORT = 3000;
 app.use(express.static('public'));
 app.use(bodyParser.json());
 
-const FILE_PATH = './cashow0_config_GfxSchemaTemplates.json';
+const FILE_PATH = './show0_config_GfxSchemaTemplates.json';
 
 app.get('/api/designs', (req, res) => {
   const raw = JSON.parse(fs.readFileSync(FILE_PATH, 'utf8'));

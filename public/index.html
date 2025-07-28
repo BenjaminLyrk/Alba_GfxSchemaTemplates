@@ -2,7 +2,7 @@
 <html lang="da">
 <head>
   <meta charset="UTF-8">
-  <title>CasparCG Editor</title>
+  <title>Alba GFX Skema Template Editor</title>
   <style>
     table { border-collapse: collapse; width: 100%; font-family: sans-serif; }
     th, td { border: 1px solid #ccc; padding: 4px; }
@@ -11,8 +11,10 @@
   </style>
 </head>
 <body>
-  <h1>CasparCG Design Editor</h1>
+  <h1>Alba GFX Skema Template Editor</h1>
   <button onclick="save()">💾 Gem ændringer</button>
+  <button onclick="addRow()">➕ Tilføj design</button>
+
   <div id="table-container"></div>
 
   <script>
@@ -34,6 +36,9 @@
         th.textContent = k;
         thead.appendChild(th);
       });
+      const thDelete = document.createElement('th');
+      thDelete.textContent = 'Slet';
+      thead.appendChild(thDelete);
 
       rows.forEach((row, i) => {
         const tr = table.insertRow();
@@ -44,6 +49,15 @@
           input.oninput = e => data[i][k] = e.target.value;
           td.appendChild(input);
         });
+
+        const deleteCell = tr.insertCell();
+        const btn = document.createElement('button');
+        btn.textContent = '🗑️';
+        btn.onclick = () => {
+          data.splice(i, 1);
+          renderTable(data);
+        };
+        deleteCell.appendChild(btn);
       });
 
       document.getElementById('table-container').innerHTML = '';
@@ -56,6 +70,26 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       }).then(() => alert('Gemte ændringer!'));
+    }
+
+    function addRow() {
+      const newRow = {
+        schema: "NYT_SKEMA_NAVN",
+        name: "NYT_DESIGN_NAVN",
+        backgroundLoop: "",
+        "--mainColor": "",
+        "--bundColor": "",
+        "--trompetColor": "",
+        "--mainTextColor": "",
+        "--trompetTextColor": "",
+        "--panelColor": "",
+        "--panelTextColor": "",
+        "--identTextColor": "",
+        "--identColor": "",
+        "--fullTextColor": ""
+      };
+      data.push(newRow);
+      renderTable(data);
     }
   </script>
 </body>
